@@ -8,7 +8,17 @@ import (
 )
 
 func main() {
-	resonse, err := http.Get("http://localhost:8080/statistics")
+	pongBaseUrl, hostExists := os.LookupEnv("SERVER_HOST")
+	if !hostExists {
+		pongBaseUrl = "http://localhost"
+		log.Println("SERVER_HOST not set, using default")
+	}
+	pongPort, portExists := os.LookupEnv("SERVER_PORT")
+	if !portExists {
+		pongPort = "8080"
+		log.Println("SERVER_PORT not set, using default")
+	}
+	resonse, err := http.Get(pongBaseUrl + ":" + pongPort)
 
 	if err != nil {
 		log.Fatal(err)
